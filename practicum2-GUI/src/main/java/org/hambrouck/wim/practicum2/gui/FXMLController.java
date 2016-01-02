@@ -42,6 +42,11 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
+    private void maakError(String Message, String Title, String HeaderText)
+    {
+        Alert alert = new Alert()
+    }
+
     @FXML
     private void encodeer(ActionEvent event) {
         if(checkFields(true)) {
