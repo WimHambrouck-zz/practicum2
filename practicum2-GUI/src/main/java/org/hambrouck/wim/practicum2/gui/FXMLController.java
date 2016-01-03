@@ -42,9 +42,12 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
-    private void maakError(String Message, String Title, String HeaderText)
+    private void maakAlert(String message, String title, Alert.AlertType alertType)
     {
-        Alert alert = new Alert()
+        Alert alert = new Alert(alertType, message, ButtonType.OK);
+        alert.setTitle(title);
+        alert.setHeaderText("");
+        alert.showAndWait();
     }
 
     @FXML
@@ -59,20 +62,16 @@ public class FXMLController implements Initializable {
                 BeveiligingsBibliotheek.versleutelBestand(invoer, uitvoer, wachtwoord);
             } catch (AccessDeniedException e) {
                 e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, String.format("Bestand niet gevonden of geen schrijfrechten op uitvoerbestand (%s)", e.getClass()), ButtonType.OK);
-                alert.setTitle("Probleem");
-                alert.setHeaderText("Er is iets fout gegaan!");
-                alert.showAndWait();
+                
+                maakAlert(String.format("Bestand niet gevonden of geen schrijfrechten op uitvoerbestand (%s)", e.getClass()), "Probleem", Alert.AlertType.ERROR);
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, String.format("Fout: %s (%s)", e.getMessage(), e.getClass()), ButtonType.OK);
-                alert.setTitle("Probleem");
-                alert.setHeaderText("Er is iets fout gegaan!");
-                alert.showAndWait();
+
+                maakAlert(String.format("Fout: %s (%s)", e.getMessage(), e.getClass()), "Probleem", Alert.AlertType.ERROR);
                 return;
             }
-            JOptionPane.showMessageDialog(null, "Klaar!", "Encryptor 3000", JOptionPane.INFORMATION_MESSAGE);
+            maakAlert("Klaar!", "Encryptor 3000", Alert.AlertType.INFORMATION);
         }
     }
 
@@ -88,21 +87,16 @@ public class FXMLController implements Initializable {
                 BeveiligingsBibliotheek.ontsleutelBestand(invoer, uitvoer, wachtwoord);
             }catch (AuthorizationException e)
             {
-                Alert alert = new Alert(Alert.AlertType.ERROR, String.format("Ongeldig wachtwoord of integriteitsfout bestand (%s)", e.getClass()), ButtonType.OK);
-                alert.setTitle("Probleem");
-                alert.setHeaderText("Er is iets fout gegaan!");
-                alert.showAndWait();
+                maakAlert(String.format("Ongeldig wachtwoord of integriteitsfout bestand (%s)", e.getClass()), "Probleem", Alert.AlertType.ERROR);
                 return;
             }
             catch (Exception e) {
                 e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, String.format("Fout: %s (%s)", e.getMessage(), e.getClass()), ButtonType.OK);
-                alert.setTitle("Probleem");
-                alert.setHeaderText("Er is iets fout gegaan!");
-                alert.showAndWait();
+                maakAlert(String.format("Fout: %s (%s)", e.getMessage(), e.getClass()), "Probleem", Alert.AlertType.ERROR);
                 return;
             }
-            JOptionPane.showMessageDialog(null, "Klaar!", "Encryptor 3000", JOptionPane.INFORMATION_MESSAGE);
+            
+            maakAlert("Klaar!", "Encryptor 3000", Alert.AlertType.INFORMATION);
         }
     }
 
@@ -110,27 +104,27 @@ public class FXMLController implements Initializable {
     {
         if(txt_invoer.getText().isEmpty())
         {
-            JOptionPane.showMessageDialog(null, "Gelieve een invoerbestand op te geven.", "Probleem", JOptionPane.ERROR_MESSAGE);
+            maakAlert("Gelieve een invoerbestand op te geven.", "Probleem", Alert.AlertType.ERROR);
             txt_invoer.requestFocus();
             return false;
         } else if(txt_uitvoer.getText().isEmpty())
         {
-            JOptionPane.showMessageDialog(null, "Gelieve een uitvoerbestand op te geven.", "Probleem", JOptionPane.ERROR_MESSAGE);
+            maakAlert("Gelieve een uitvoerbestand op te geven.", "Probleem", Alert.AlertType.ERROR);
             txt_uitvoer.requestFocus();
             return false;
         } else if(txt_wachtwoord.getText().isEmpty())
         {
-            JOptionPane.showMessageDialog(null, "Gelieve een wachtwoord op te geven.", "Probleem", JOptionPane.ERROR_MESSAGE);
+            maakAlert("Gelieve een wachtwoord op te geven.", "Probleem", Alert.AlertType.ERROR);
             txt_wachtwoord.requestFocus();
             return false;
         } else if(wachtwoordControle && txt_wachtwoord_herhaald.getText().isEmpty())
         {
-            JOptionPane.showMessageDialog(null, "Gelieve je wachtwoord opnieuw op te geven.", "Probleem", JOptionPane.ERROR_MESSAGE);
+            maakAlert("Gelieve je wachtwoord opnieuw op te geven.", "Probleem", Alert.AlertType.ERROR);
             txt_wachtwoord_herhaald.requestFocus();
             return false;
         } else if(wachtwoordControle && (!txt_wachtwoord.getText().equals(txt_wachtwoord_herhaald.getText())))
         {
-            JOptionPane.showMessageDialog(null, "Wachtwoorden komen niet overeen!", "Probleem", JOptionPane.ERROR_MESSAGE);
+            maakAlert("Wachtwoorden komen niet overeen!", "Probleem", Alert.AlertType.ERROR);
             txt_wachtwoord.requestFocus();
             return false;
         }
